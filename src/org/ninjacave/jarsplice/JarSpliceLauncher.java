@@ -70,7 +70,6 @@
 /*     */     String line;
 /* 113 */     while ((line = br.readLine()) != null)
 /*     */     {
-/*     */       String line;
 /* 114 */       System.out.println(line);
 /*     */     }
 /*     */   }
@@ -94,7 +93,6 @@
 /*     */           int bufferSize;
 /* 140 */           while ((bufferSize = in.read(buffer, 0, buffer.length)) != -1)
 /*     */           {
-/*     */             int bufferSize;
 /* 141 */             out.write(buffer, 0, bufferSize);
 /*     */           }
 /*     */ 
