@@ -60,7 +60,7 @@
     <target name="create-run-jar">
         <jar destfile="JarSplicePlus.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="org.ninjacave.jarsplice.JarSplice"/>
+                <attribute name="Main-Class" value="com.elezeta.jarspliceplus.JarSplicePlusLauncher"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="bin"/>

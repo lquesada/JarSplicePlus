@@ -17,7 +17,10 @@ public class JarSpliceFrame
 
   public JarSpliceFrame()
   {
-    JFrame frame = new JFrame("JarSplice - The Fat Jar Creator - version 0.40");
+
+	  //TITLE MODIFIED AS TO STATE THAT JARSPLICEPLUS IS AN EXTENSION TO JARSPLICE
+	  
+    JFrame frame = new JFrame("JarSplicePlus - An Extension to JarSplice");
 
     TabPane tabPane = new TabPane(this);
 
