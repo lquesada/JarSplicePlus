@@ -62,17 +62,12 @@
 /* 97 */         out.putNextEntry(new ZipEntry(getFileName(natives[i])));
 /*    */ 
 /* 99 */         while ((this.bufferSize = in.read(this.buffer, 0, this.buffer.length)) != -1) {
-/* 100 */           out.write(this.buffer, 0, this.bufferSize);
+          out.write(this.buffer, 0, this.bufferSize);
 /*    */         }
 /*    */ 
-/* 103 */         in.close();
-/* 104 */         out.closeEntry();
+        in.close();
+        out.closeEntry();
 /*    */       }
 /*    */     }
 /*    */   }
 /*    */ }
-
-/* Location:           /home/elezeta/Descargas/jarsplice-0.40.jar
- * Qualified Name:     org.ninjacave.jarsplice.core.WinExeSplicer
- * JD-Core Version:    0.6.2
- */

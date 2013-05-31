@@ -58,14 +58,9 @@
 /* 98 */           out.write(this.buffer, 0, this.bufferSize);
 /*    */         }
 /*    */ 
-/* 101 */         in.close();
-/* 102 */         out.closeEntry();
+        in.close();
+        out.closeEntry();
 /*    */       }
 /*    */     }
 /*    */   }
 /*    */ }
-
-/* Location:           /home/elezeta/Descargas/jarsplice-0.40.jar
- * Qualified Name:     org.ninjacave.jarsplice.core.ShellScriptSplicer
- * JD-Core Version:    0.6.2
- */

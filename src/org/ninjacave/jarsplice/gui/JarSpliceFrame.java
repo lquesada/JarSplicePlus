@@ -54,8 +54,3 @@
 /* 98 */     return this.classPanel.getVmArgs();
 /*    */   }
 /*    */ }
-
-/* Location:           /home/elezeta/Descargas/jarsplice-0.40.jar
- * Qualified Name:     org.ninjacave.jarsplice.gui.JarSpliceFrame
- * JD-Core Version:    0.6.2
- */

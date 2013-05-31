@@ -22,8 +22,3 @@
 /* 65 */     add(label);
 /*    */   }
 /*    */ }
-
-/* Location:           /home/elezeta/Descargas/jarsplice-0.40.jar
- * Qualified Name:     org.ninjacave.jarsplice.gui.IntroductionPanel
- * JD-Core Version:    0.6.2
- */
