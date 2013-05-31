@@ -1,0 +1,10 @@
+Frequently Asked Questions
+Q. What License is JarSplice under?
+A. JarSplice is free to use for any type of application. The source code for the actual JarSplice application will be under a BSD Licence. Anything produced with JarSplice remains under the same licence as the input.
+Q. Does JarSplice create Jar files from source/class files?
+A. No, you must put your project files into a jar file before using JarSplice. Most IDE's have this feature built in and allow you to export your class and resource files to a jar.
+Q. Does JarSplice create Windows Executables (*.exe files)?
+A. While the Executable Jar files (*.jar) produced by JarSplice run on windows just by clicking them you may want an exe files ir with the jar file so that end users on linux and mac can also start the jar file from the same can just include an exe launcher with the jar file so that end users on linux and mac can also start the jar file from the same can just include an exe launcher with the jar file so that end users on linux and mac can also start the jar file from the same can just include an exe launcher with the jar file so that end users on linux and mac can also start the jar file from the same bundle.
+Q. How do you create *.icns icon files for use with OS X .app bundles?
+A. This is the Apple Icon Format used by OS X for App Bundles. Many image editing tool like the GIMP and Photoshop support the format. You can also use free online converters like iConvert to create *.icns file.
+
