@@ -22,6 +22,7 @@
     </target>
     <target name="clean">
         <delete dir="bin"/>
+        <delete file="JarSplicePlus.jar"/>
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project,create-run-jar" name="build"/>
