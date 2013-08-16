@@ -1,4 +1,3 @@
-/bin
-/junit
-/.metadata
-/JarSplicePlus.jar
+out/
+.idea/workspace.xml
+.idea/tasks.xml
