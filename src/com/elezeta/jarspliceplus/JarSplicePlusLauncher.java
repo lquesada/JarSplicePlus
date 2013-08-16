@@ -18,98 +18,98 @@ public class JarSplicePlusLauncher {
 	}
 
 	public static void main(String args[]) {
-		if (args.length==0) {
+		if (args.length == 0) {
 		    JarSpliceFrame gui = new JarSpliceFrame();
-		}
-		else {
+		} else if (args.length == 1
+                   && args[0].equals("-h")) {
+            help();
+            System.exit(0);
+        } else {
 			Splicer spl = new Splicer();
-	
-			List<String> inputJars = new ArrayList<String>();
+
+			List<String> inputJars    = new ArrayList<String>();
 			List<String> inputNatives = new ArrayList<String>();
-			String mainClass = null;
+			String mainClass  = null;
 			String parameters = null;
-			String output = null;
-	
+			String output     = null;
+
 			Target current = Target.NONE;
-	
+
 			// Parse and check parameters
-	
-			for (int i = 0;i < args.length;i++) {
-				if (args[i].equals("-i"))
-					current = Target.INPUTJARS;
-				else if (args[i].equals("-n"))
-					current = Target.INPUTNATIVES;
-				else if (args[i].equals("-m"))
-					current = Target.MAINCLASS;
-				else if (args[i].equals("-p"))
-					current = Target.PARAMETERS;
-				else if (args[i].equals("-o"))
-					current = Target.OUTPUT;
-				else {
-					switch (current) {
-					case NONE:
-						error("Invalid parameters.");
-						break;
-					case INPUTJARS:
-						System.out.println("Input JAR files: "+args[i]);
-						inputJars.add(args[i]);
-						break;
-					case INPUTNATIVES:
-						System.out.println("Input native files: "+args[i]);
-						inputNatives.add(args[i]);
-						break;
-					case MAINCLASS:
-						if (mainClass != null) {
-							error("Multiple declaration of main class.");
-						}
-						else {
-							mainClass = args[i];
-							System.out.println("Main class: "+args[i]);
-						}
-						current = Target.NONE;
-						break;
-					case PARAMETERS:
-						if (parameters != null) {
-							parameters = parameters+" "+args[i];
-							System.out.println("JVM Parameters: "+parameters);
-						}
-						else {
-							parameters = args[i];
-							System.out.println("JVM Parameters: "+parameters);
-						}
-						break;
-					case OUTPUT:
-						if (output != null) {
-							error("Multiple declaration of output JAR file.");
-						}
-						else {
-							output = args[i];
-							System.out.println("Output JAR file: "+args[i]);
-						}
-						current = Target.NONE;
-						break;
-					}
-				}
-			}
-	
+
+            for (String arg : args) {
+                if (arg.equals("-i"))
+                    current = Target.INPUTJARS;
+                else if (arg.equals("-n"))
+                    current = Target.INPUTNATIVES;
+                else if (arg.equals("-m"))
+                    current = Target.MAINCLASS;
+                else if (arg.equals("-p"))
+                    current = Target.PARAMETERS;
+                else if (arg.equals("-o"))
+                    current = Target.OUTPUT;
+                else {
+                    switch (current) {
+                        case NONE:
+                            error("Invalid parameters.");
+                            break;
+                        case INPUTJARS:
+                            System.out.println("Input JAR files: " + arg);
+                            inputJars.add(arg);
+                            break;
+                        case INPUTNATIVES:
+                            System.out.println("Input native files: " + arg);
+                            inputNatives.add(arg);
+                            break;
+                        case MAINCLASS:
+                            if (mainClass != null) {
+                                error("Multiple declaration of main class.");
+                            } else {
+                                mainClass = arg;
+                                System.out.println("Main class: " + arg);
+                            }
+                            current = Target.NONE;
+                            break;
+                        case PARAMETERS:
+                            if (parameters != null) {
+                                parameters = parameters + " " + arg;
+                                System.out.println("JVM Parameters: " + parameters);
+                            } else {
+                                parameters = arg;
+                                System.out.println("JVM Parameters: " + parameters);
+                            }
+                            break;
+                        case OUTPUT:
+                            if (output != null) {
+                                error("Multiple declaration of output JAR file.");
+                            } else {
+                                output = arg;
+                                System.out.println("Output JAR file: " + arg);
+                            }
+                            current = Target.NONE;
+                            break;
+                    }
+                }
+            }
+
 			if (inputJars.size() == 0) {
 				error("No input JAR files.");
 			}
-	
+
 			if (mainClass == null) {
 				error("No main class.");
 			}
-	
+
 			if (output == null) {
 				error("No output JAR file.");
 			}
-	
+
 			if (parameters == null) {
 				parameters = "";
 			}
-	
+
 			// Invoke JarSplice
-	
+
 			try {
 				spl.createFatJar(inputJars.toArray(new String[0]),inputNatives.toArray(new String[0]),output,mainClass,parameters);
 			} catch (Exception e) {
@@ -118,7 +118,7 @@ public class JarSplicePlusLauncher {
 				System.out.println("Error while building output JAR file.");
 				System.exit(1);
 			}
-	
+
 			System.out.println("Output JAR file "+output+" built successfully.");
 			System.exit(0);
 		}

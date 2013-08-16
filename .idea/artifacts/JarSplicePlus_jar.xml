@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JarSplicePlus:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JarSplicePlus_jar</output-path>
+    <root id="archive" name="JarSplicePlus.jar">
+      <element id="module-output" name="JarSplicePlus" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-compress-1.5.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
