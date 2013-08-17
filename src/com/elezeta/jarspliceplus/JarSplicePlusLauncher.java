@@ -14,13 +14,12 @@ public class JarSplicePlusLauncher {
 		INPUTNATIVES,
 		MAINCLASS,
 		PARAMETERS,
-		OUTPUT
+		OUTPUT,
+        XML
 	}
 
 	public static void main(String args[]) {
-		if (args.length == 0) {
-		    JarSpliceFrame gui = new JarSpliceFrame();
-		} else if (args.length == 1
+		if (args.length == 1
                    && args[0].equals("-h")) {
             help();
             System.exit(0);
@@ -38,20 +37,25 @@ public class JarSplicePlusLauncher {
 			// Parse and check parameters
 
             for (String arg : args) {
-                if (arg.equals("-i"))
+                if (arg.equals("-x")) {
+                    current = Target.XML;
+                } else if (arg.equals("-i")) {
                     current = Target.INPUTJARS;
-                else if (arg.equals("-n"))
+                } else if (arg.equals("-n")) {
                     current = Target.INPUTNATIVES;
-                else if (arg.equals("-m"))
+                } else if (arg.equals("-m")) {
                     current = Target.MAINCLASS;
-                else if (arg.equals("-p"))
+                } else if (arg.equals("-p")) {
                     current = Target.PARAMETERS;
-                else if (arg.equals("-o"))
+                } else if (arg.equals("-o")) {
                     current = Target.OUTPUT;
-                else {
+                } else {
                     switch (current) {
                         case NONE:
                             error("Invalid parameters.");
+                            break;
+                        case XML:
+                            System.out.println("Parsing config from xml file: " + arg);
                             break;
                         case INPUTJARS:
                             System.out.println("Input JAR files: " + arg);
@@ -142,6 +146,7 @@ public class JarSplicePlusLauncher {
 		System.out.println("                                  -m <main class>");
 		System.out.println("                                 [-p <JVM parameters>]");
 		System.out.println("                                 [-o <output JAR file>]");
+        System.out.println("                                 [-x <xml config file>]");
 		System.out.println("");
 		System.out.println("Example: Bundling a complete application.");
 		System.out.println("");
