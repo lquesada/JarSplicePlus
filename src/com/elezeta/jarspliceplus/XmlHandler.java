@@ -1,5 +1,6 @@
 package com.elezeta.jarspliceplus;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -19,18 +20,24 @@ public class XmlHandler extends DefaultHandler {
     }
 
     @Override
+    public void startElement (String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        temp = null;
+    }
+
+    @Override
     public void endElement (String uri, String localName, String qName) throws SAXException {
-        System.out.println(qName);
-        if (qName.equalsIgnoreCase("inputJar")) {
-            jarSpliceParams.inputJar(temp);
-        } else if (qName.equalsIgnoreCase("inputNative")) {
-            jarSpliceParams.inputNative(temp);
-        } else if (qName.equalsIgnoreCase("vmParam")) {
-            jarSpliceParams.parameters(temp);
-        } else if (qName.equalsIgnoreCase("mainClass")) {
-            jarSpliceParams.mainClass(temp);
-        } else if (qName.equalsIgnoreCase("outputJar")) {
-            jarSpliceParams.output(temp);
+        if (temp != null) {
+            if (qName.equalsIgnoreCase("inputJar")) {
+                jarSpliceParams.inputJar(temp);
+            } else if (qName.equalsIgnoreCase("inputNative")) {
+                jarSpliceParams.inputNative(temp);
+            } else if (qName.equalsIgnoreCase("vmParam")) {
+                jarSpliceParams.parameters(temp);
+            } else if (qName.equalsIgnoreCase("mainClass")) {
+                jarSpliceParams.mainClass(temp);
+            } else if (qName.equalsIgnoreCase("outputJar")) {
+                jarSpliceParams.output(temp);
+            }
         }
     }
 
@@ -38,4 +45,5 @@ public class XmlHandler extends DefaultHandler {
     public void characters (char[] ch, int start, int length) throws SAXException {
         temp = new String(ch, start, length);
     }
+
 }

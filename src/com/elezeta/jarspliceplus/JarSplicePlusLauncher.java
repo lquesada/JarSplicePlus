@@ -50,7 +50,6 @@ public class JarSplicePlusLauncher {
         } catch (IOException e) {
             System.out.println("io problem");
         }
-        System.exit(0);
     }
 
     private String getFilePath (String fileName) {

@@ -26,6 +26,7 @@ public class JarSpliceParams {
 
     public void inputJar (String inputJar) {
         inputJars.add(inputJar);
+        System.out.println("Input jar file: " + inputJar);
     }
 
     public List<String> getInputJars () {
@@ -38,6 +39,7 @@ public class JarSpliceParams {
 
     public void inputNative (String inputNative) {
         inputNatives.add(inputNative);
+        System.out.println("Native file: " + inputNative);
     }
 
     public List<String> getInputNatives () {
@@ -71,7 +73,7 @@ public class JarSpliceParams {
         } else {
             this.parameters = parameters;
         }
-        System.out.println("JVM Parameters: " + parameters);
+        System.out.println("JVM Parameter: " + parameters);
     }
 
     public String getParameters () {
