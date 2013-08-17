@@ -1,10 +1,14 @@
 package com.elezeta.jarspliceplus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 import org.ninjacave.jarsplice.core.Splicer;
-import org.ninjacave.jarsplice.gui.JarSpliceFrame;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class JarSplicePlusLauncher {
 
@@ -18,115 +22,146 @@ public class JarSplicePlusLauncher {
         XML
 	}
 
-	public static void main(String args[]) {
-		if (args.length == 1
-                   && args[0].equals("-h")) {
+    private JarSpliceParams jarSpliceParams;
+    private Splicer spl;
+    private Target  current;
+
+    public JarSplicePlusLauncher (String[] args) {
+        jarSpliceParams = new JarSpliceParams();
+        spl             = new Splicer();
+        current         = Target.NONE;
+        parseInput(args);
+    }
+
+    public static void main(String args[]) {
+        new JarSplicePlusLauncher(args);
+    }
+
+    private void handleXmlParam (String fileName) {
+        System.out.println("Path: " + fileName);
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        try {
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            saxParser.parse(new File(fileName), new XmlHandler(jarSpliceParams));
+        } catch (ParserConfigurationException e) {
+            System.out.println("bad sax config");
+        } catch (SAXException e) {
+            System.out.println("sax is busted");
+        } catch (IOException e) {
+            System.out.println("io problem");
+        }
+        System.exit(0);
+    }
+
+    private String getFilePath (String fileName) {
+        String path = new File(fileName).getAbsolutePath();
+        if (File.separatorChar != '/') {
+            path = path.replace(File.separatorChar, '/');
+        }
+
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        return path;
+    }
+
+    private void parseParams (String[] args) {
+        // Parse and check parameters
+        for (String arg : args) {
+            if (arg.equals("-x")) {
+                current = Target.XML;
+            } else if (arg.equals("-i")) {
+                current = Target.INPUTJARS;
+            } else if (arg.equals("-n")) {
+                current = Target.INPUTNATIVES;
+            } else if (arg.equals("-m")) {
+                current = Target.MAINCLASS;
+            } else if (arg.equals("-p")) {
+                current = Target.PARAMETERS;
+            } else if (arg.equals("-o")) {
+                current = Target.OUTPUT;
+            } else {
+                performTargetAction(arg);
+            }
+        }
+    }
+
+    private void verifyInput () {
+        if (!jarSpliceParams.hasInputJars()) {
+            error("No input JAR files.");
+        }
+
+        if (!jarSpliceParams.hasMainClass()) {
+            error("No main class.");
+        }
+
+        if (!jarSpliceParams.hasOutput()) {
+            error("No output JAR file.");
+        }
+
+    }
+
+    private void invokeJarSplice () {
+        try {
+            spl.createFatJar(
+                    jarSpliceParams.getInputJars().toArray(new String[0]),
+                    jarSpliceParams.getInputNatives().toArray(new String[0]),
+                    jarSpliceParams.getOutput(),
+                    jarSpliceParams.getMainClass(),
+                    jarSpliceParams.getParameters()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("");
+            System.out.println("Error while building output JAR file.");
+            System.exit(1);
+        }
+        System.out.println("Output JAR file " + jarSpliceParams.getOutput() + " built successfully.");
+        System.exit(0);
+    }
+
+    private void parseInput (String[] args) {
+        if (args.length == 1
+                && args[0].equals("-h")) {
             help();
             System.exit(0);
         } else {
-			Splicer spl = new Splicer();
+            parseParams(args);
+            verifyInput();
+            invokeJarSplice();
+        }
+    }
 
-			List<String> inputJars    = new ArrayList<String>();
-			List<String> inputNatives = new ArrayList<String>();
-			String mainClass  = null;
-			String parameters = null;
-			String output     = null;
-
-			Target current = Target.NONE;
-
-			// Parse and check parameters
-
-            for (String arg : args) {
-                if (arg.equals("-x")) {
-                    current = Target.XML;
-                } else if (arg.equals("-i")) {
-                    current = Target.INPUTJARS;
-                } else if (arg.equals("-n")) {
-                    current = Target.INPUTNATIVES;
-                } else if (arg.equals("-m")) {
-                    current = Target.MAINCLASS;
-                } else if (arg.equals("-p")) {
-                    current = Target.PARAMETERS;
-                } else if (arg.equals("-o")) {
-                    current = Target.OUTPUT;
-                } else {
-                    switch (current) {
-                        case NONE:
-                            error("Invalid parameters.");
-                            break;
-                        case XML:
-                            System.out.println("Parsing config from xml file: " + arg);
-                            break;
-                        case INPUTJARS:
-                            System.out.println("Input JAR files: " + arg);
-                            inputJars.add(arg);
-                            break;
-                        case INPUTNATIVES:
-                            System.out.println("Input native files: " + arg);
-                            inputNatives.add(arg);
-                            break;
-                        case MAINCLASS:
-                            if (mainClass != null) {
-                                error("Multiple declaration of main class.");
-                            } else {
-                                mainClass = arg;
-                                System.out.println("Main class: " + arg);
-                            }
-                            current = Target.NONE;
-                            break;
-                        case PARAMETERS:
-                            if (parameters != null) {
-                                parameters = parameters + " " + arg;
-                                System.out.println("JVM Parameters: " + parameters);
-                            } else {
-                                parameters = arg;
-                                System.out.println("JVM Parameters: " + parameters);
-                            }
-                            break;
-                        case OUTPUT:
-                            if (output != null) {
-                                error("Multiple declaration of output JAR file.");
-                            } else {
-                                output = arg;
-                                System.out.println("Output JAR file: " + arg);
-                            }
-                            current = Target.NONE;
-                            break;
-                    }
-                }
-            }
-
-			if (inputJars.size() == 0) {
-				error("No input JAR files.");
-			}
-
-			if (mainClass == null) {
-				error("No main class.");
-			}
-
-			if (output == null) {
-				error("No output JAR file.");
-			}
-
-			if (parameters == null) {
-				parameters = "";
-			}
-
-			// Invoke JarSplice
-
-			try {
-				spl.createFatJar(inputJars.toArray(new String[0]),inputNatives.toArray(new String[0]),output,mainClass,parameters);
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("");
-				System.out.println("Error while building output JAR file.");
-				System.exit(1);
-			}
-
-			System.out.println("Output JAR file "+output+" built successfully.");
-			System.exit(0);
-		}
-	}
+    private void performTargetAction (String arg) {
+        switch (current) {
+            case NONE:
+                error("Invalid parameters.");
+                break;
+            case XML:
+                System.out.println("Parsing config from xml file: " + arg);
+                handleXmlParam(arg);
+                break;
+            case INPUTJARS:
+                System.out.println("Input JAR files: " + arg);
+                jarSpliceParams.inputJar(arg);
+                break;
+            case INPUTNATIVES:
+                System.out.println("Input native files: " + arg);
+                jarSpliceParams.inputNative(arg);
+                break;
+            case MAINCLASS:
+                jarSpliceParams.mainClass(arg);
+                current = Target.NONE;
+                break;
+            case PARAMETERS:
+                jarSpliceParams.parameters(arg);
+                break;
+            case OUTPUT:
+                jarSpliceParams.output(arg);
+                current = Target.NONE;
+                break;
+        }
+    }
 
 	public static void error(String text) {
 		System.out.println("Error: "+text);
