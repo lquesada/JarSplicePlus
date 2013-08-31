@@ -2,10 +2,10 @@ package com.elezeta.jarspliceplus;
 
 import java.io.File;
 import java.io.IOException;
-
+import org.ninjacave.jarsplice.JarSpliceLauncher;
 import org.ninjacave.jarsplice.core.Splicer;
+import org.ninjacave.jarsplice.gui.JarSpliceFrame;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -120,7 +120,9 @@ public class JarSplicePlusLauncher {
     }
 
     private void parseInput (String[] args) {
-        if (args.length == 1
+        if (args.length == 0) {
+            new JarSpliceFrame();
+        } else if (args.length == 1
                 && args[0].equals("-h")) {
             help();
             System.exit(0);
