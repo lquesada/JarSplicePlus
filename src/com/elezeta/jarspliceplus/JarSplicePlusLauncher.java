@@ -3,6 +3,8 @@ package com.elezeta.jarspliceplus;
 import java.io.File;
 import java.io.IOException;
 import org.ninjacave.jarsplice.JarSpliceLauncher;
+import org.ninjacave.jarsplice.core.MacAppSplicer;
+import org.ninjacave.jarsplice.core.ShellScriptSplicer;
 import org.ninjacave.jarsplice.core.Splicer;
 import org.ninjacave.jarsplice.gui.JarSpliceFrame;
 import org.xml.sax.SAXException;
@@ -100,15 +102,32 @@ public class JarSplicePlusLauncher {
 
     }
 
+    private void confirmPaths () {
+        for (String path: jarSpliceParams.getRequiredPaths()) {
+            confirmPath(path);
+        }
+    }
+
+    private void confirmPath (String path) {
+        File file = new File(path);
+        if (file.mkdirs()) {
+            System.out.println("Created path: " + path);
+        }
+    }
+
     private void invokeJarSplice () {
+        confirmPaths();
+        String[] sources = jarSpliceParams.getInputJars().toArray(new String[jarSpliceParams.getInputJars().size()]);
+        String[] natives = jarSpliceParams.getInputNatives().toArray(new String[jarSpliceParams.getInputNatives().size()]);
         try {
             spl.createFatJar(
-                    jarSpliceParams.getInputJars().toArray(new String[0]),
-                    jarSpliceParams.getInputNatives().toArray(new String[0]),
+                    sources,
+                    natives,
                     jarSpliceParams.getOutput(),
                     jarSpliceParams.getMainClass(),
                     jarSpliceParams.getParameters()
             );
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("");
@@ -116,6 +135,43 @@ public class JarSplicePlusLauncher {
             System.exit(1);
         }
         System.out.println("Output JAR file " + jarSpliceParams.getOutput() + " built successfully.");
+        if (jarSpliceParams.osxAppRequested()) {
+            MacAppSplicer mSpl = new MacAppSplicer();
+            String message;
+            try {
+                mSpl.createAppBundle(
+                        sources,
+                        natives,
+                        jarSpliceParams.getOutputOsxApp(),
+                        jarSpliceParams.getMainClass(),
+                        jarSpliceParams.getParameters(),
+                        jarSpliceParams.getName(),
+                        jarSpliceParams.getOsxAppIcon()
+                );
+                message = "APP Bundle Successfully Created.";
+            } catch (Exception ex) {
+                message = "APP Bundle creation failed due to the following exception:\n" + ex.getMessage();
+            }
+            System.out.println(message);
+        }
+        if (jarSpliceParams.shRequested()) {
+            System.lineSeparator();System.setProperty("line.separator", "\n");
+            String message;
+            try {
+                ShellScriptSplicer shSpl = new ShellScriptSplicer();
+                shSpl.createFatJar(
+                        sources,
+                        natives,
+                        jarSpliceParams.getOutputSh(),
+                        jarSpliceParams.getMainClass(),
+                        jarSpliceParams.getParameters()
+                );
+                message = "ShellScript Successfully Created.";
+            } catch (Exception ex) {
+                message = "ShellScript creation failed due to the following exception:\n" + ex.getMessage();
+            }
+            System.out.println(message);
+        }
         System.exit(0);
     }
 
