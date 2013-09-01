@@ -29,32 +29,55 @@ public class XmlHandler extends DefaultHandler {
         if (temp != null) {
             if (qName.equalsIgnoreCase("inputJar")) {
                 jarSpliceParams.inputJar(temp);
+
             } else if (qName.equalsIgnoreCase("inputNative")) {
                 jarSpliceParams.inputNative(temp);
+
             } else if (qName.equalsIgnoreCase("nativesDir")) {
                 jarSpliceParams.collectNativesInDir(temp);
+
+            } else if (qName.equalsIgnoreCase("nativesDirWindows")) {
+                jarSpliceParams.collectNativesInDirWindows(temp);
+
+            } else if (qName.equalsIgnoreCase("nativesDirLinux")) {
+                jarSpliceParams.collectNativesInDirLinux(temp);
+
+            } else if (qName.equalsIgnoreCase("nativesDirOsx")) {
+                jarSpliceParams.collectNativesInDirOsx(temp);
+
             } else if (qName.equalsIgnoreCase("vmParam")) {
                 jarSpliceParams.parameters(temp);
+
             } else if (qName.equalsIgnoreCase("mainClass")) {
                 jarSpliceParams.mainClass(temp);
+
             } else if (qName.equalsIgnoreCase("outputJar")) {
                 jarSpliceParams.output(temp);
+
             } else if (qName.equalsIgnoreCase("outputJarDir")) {
                 jarSpliceParams.outputDir(temp);
+
             } else if (qName.equalsIgnoreCase("osxAppIcon")) {
                 jarSpliceParams.osxAppIcon(temp);
+
             } else if (qName.equalsIgnoreCase("outputOsxApp")) {
                 jarSpliceParams.outputOsxApp(temp);
+
             } else if (qName.equalsIgnoreCase("outputOsxAppDir")) {
                 jarSpliceParams.outputOsxAppDir(temp);
+
             } else if (qName.equalsIgnoreCase("outputSh")) {
                 jarSpliceParams.outputSh(temp);
+
             } else if (qName.equalsIgnoreCase("outputShDir")) {
                 jarSpliceParams.outputShDir(temp);
+
             } else if (qName.equalsIgnoreCase("name")) {
                 jarSpliceParams.name(temp);
+
             } else if (qName.equalsIgnoreCase("requiredPath")) {
                 jarSpliceParams.requirePath(temp);
+
             }
         }
     }

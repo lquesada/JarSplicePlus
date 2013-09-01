@@ -13,6 +13,9 @@ public class JarSpliceParams {
 
     private List<String> inputJars;
     private List<String> inputNatives;
+    private List<String> windowsNatives;
+    private List<String> linuxNatives;
+    private List<String> osxNatives;
     private List<String> requiredPaths;
     private String       mainClass;
     private String       parameters;
@@ -28,6 +31,9 @@ public class JarSpliceParams {
     public JarSpliceParams () {
         inputJars       = new ArrayList<String>();
         inputNatives    = new ArrayList<String>();
+        windowsNatives  = new ArrayList<String>();
+        linuxNatives    = new ArrayList<String>();
+        osxNatives      = new ArrayList<String>();
         requiredPaths   = new ArrayList<String>();
         mainClass       = null;
         parameters      = null;
@@ -101,13 +107,79 @@ public class JarSpliceParams {
         }
     }
 
+    public void collectNativesInDirWindows (String path) {
+        File file = new File(path);
+        for (String nativeFileName: file.list()) {
+            inputNativeWindows(path + File.separator + nativeFileName);
+        }
+    }
+
+    public void collectNativesInDirLinux (String path) {
+        File file = new File(path);
+        for (String nativeFileName: file.list()) {
+            inputNativeLinux(path + File.separator + nativeFileName);
+        }
+    }
+
+    public void collectNativesInDirOsx (String path) {
+        File file = new File(path);
+        for (String nativeFileName: file.list()) {
+            inputNativeOsx(path + File.separator + nativeFileName);
+        }
+    }
+
     public void inputNative (String inputNative) {
         inputNatives.add(inputNative);
         System.out.println("Native file: " + inputNative);
     }
 
+    public void inputNativeWindows (String inputNative) {
+        windowsNatives.add(inputNative);
+        System.out.println("Windows native file: " + inputNative);
+    }
+
+    public void inputNativeLinux (String inputNative) {
+        linuxNatives.add(inputNative);
+        System.out.println("Linux native file: " + inputNative);
+    }
+
+    public void inputNativeOsx (String inputNative) {
+        osxNatives.add(inputNative);
+        System.out.println("OSX native file: " + inputNative);
+    }
+
     public List<String> getInputNatives () {
         return inputNatives;
+    }
+
+    public List<String> getInputNativesWindows () {
+        List<String> natives;
+        if (windowsNatives.isEmpty()) {
+            natives = inputNatives;
+        } else {
+            natives = windowsNatives;
+        }
+        return natives;
+    }
+
+    public List<String> getInputNativesLinux () {
+        List<String> natives;
+        if (linuxNatives.isEmpty()) {
+            natives = inputNatives;
+        } else {
+            natives = linuxNatives;
+        }
+        return natives;
+    }
+
+    public List<String> getInputNativesOsx () {
+        List<String> natives;
+        if (osxNatives.isEmpty()) {
+            natives = inputNatives;
+        } else {
+            natives = osxNatives;
+        }
+        return natives;
     }
 
     public void mainClass (String mainClass) {

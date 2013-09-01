@@ -2,6 +2,8 @@ package com.elezeta.jarspliceplus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 import org.ninjacave.jarsplice.JarSpliceLauncher;
 import org.ninjacave.jarsplice.core.MacAppSplicer;
 import org.ninjacave.jarsplice.core.ShellScriptSplicer;
@@ -115,14 +117,17 @@ public class JarSplicePlusLauncher {
         }
     }
 
+    private String[] stringArray (List<String> list) {
+        return list.toArray(new String[list.size()]);
+    }
+
     private void invokeJarSplice () {
         confirmPaths();
-        String[] sources = jarSpliceParams.getInputJars().toArray(new String[jarSpliceParams.getInputJars().size()]);
-        String[] natives = jarSpliceParams.getInputNatives().toArray(new String[jarSpliceParams.getInputNatives().size()]);
+        String[] sources = stringArray(jarSpliceParams.getInputJars());
         try {
             spl.createFatJar(
                     sources,
-                    natives,
+                    stringArray(jarSpliceParams.getInputNativesWindows()),
                     jarSpliceParams.getOutput(),
                     jarSpliceParams.getMainClass(),
                     jarSpliceParams.getParameters()
@@ -141,7 +146,7 @@ public class JarSplicePlusLauncher {
             try {
                 mSpl.createAppBundle(
                         sources,
-                        natives,
+                        stringArray(jarSpliceParams.getInputNativesOsx()),
                         jarSpliceParams.getOutputOsxApp(),
                         jarSpliceParams.getMainClass(),
                         jarSpliceParams.getParameters(),
@@ -161,7 +166,7 @@ public class JarSplicePlusLauncher {
                 ShellScriptSplicer shSpl = new ShellScriptSplicer();
                 shSpl.createFatJar(
                         sources,
-                        natives,
+                        stringArray(jarSpliceParams.getInputNativesLinux()),
                         jarSpliceParams.getOutputSh(),
                         jarSpliceParams.getMainClass(),
                         jarSpliceParams.getParameters()
