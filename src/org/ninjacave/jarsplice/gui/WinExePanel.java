@@ -1,23 +1,12 @@
 package org.ninjacave.jarsplice.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.PrintStream;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.filechooser.FileFilter;
-import org.ninjacave.jarsplice.core.WinExeSplicer;
+import org.ninjacave.jarsplice.core.*;
 
 public class WinExePanel extends JPanel
   implements ActionListener
@@ -50,8 +39,8 @@ public class WinExePanel extends JPanel
     JPanel descriptionPanel = new JPanel();
     JLabel label = new JLabel();
     label.setText(
-      String.format("<html><div style=\"width:%dpx;\">%s</div><html>", new Object[] { 
-      Integer.valueOf(300), 
+      String.format("<html><div style=\"width:%dpx;\">%s</div><html>", new Object[] {
+      Integer.valueOf(300),
       "This is an optional step and will create a Windows EXE File. " }));
 
     descriptionPanel.add(label);
@@ -103,8 +92,8 @@ public class WinExePanel extends JPanel
     JPanel descriptionPanel = new JPanel();
     JLabel label = new JLabel();
     label.setText(
-      String.format("<html><div style=\"width:%dpx;\">%s</div><html>", new Object[] { 
-      Integer.valueOf(300), 
+      String.format("<html><div style=\"width:%dpx;\">%s</div><html>", new Object[] {
+      Integer.valueOf(300),
       "Select the icon the exe will use. This should be in the*.png file format." }));
 
     descriptionPanel.add(label);
@@ -130,9 +119,9 @@ public class WinExePanel extends JPanel
       public void approveSelection() {
         File f = getSelectedFile();
         if ((f.exists()) && (getDialogType() == 1)) {
-          int result = 
+          int result =
             JOptionPane.showConfirmDialog(
-            this, "The file already exists. Do you want to overwrite it?", 
+            this, "The file already exists. Do you want to overwrite it?",
             "Confirm Replace", 0);
           switch (result) {
           case 0:
@@ -168,9 +157,9 @@ public class WinExePanel extends JPanel
   {
     if (e.getSource() == this.winExeButton)
     {
-      this.fileChooser.setCurrentDirectory(this.jarSplice.lastDirectory);
+      this.fileChooser.setCurrentDirectory(this.jarSplice.lastExportDirectory);
       int value = this.fileChooser.showSaveDialog(this);
-      this.jarSplice.lastDirectory = this.fileChooser.getCurrentDirectory();
+      this.jarSplice.lastExportDirectory = this.fileChooser.getCurrentDirectory();
 
       if (value == 0) {
         String[] sources = this.jarSplice.getJarsList();
@@ -182,14 +171,14 @@ public class WinExePanel extends JPanel
         {
           this.winExeSplicer.createFatJar(sources, natives, output, mainClass, vmArgs);
 
-          JOptionPane.showMessageDialog(this, 
-            "EXE Successfully Created.", 
+          JOptionPane.showMessageDialog(this,
+            "EXE Successfully Created.",
             "Success", -1);
         }
         catch (Exception ex) {
           ex.printStackTrace();
-          JOptionPane.showMessageDialog(this, 
-            "EXE creation failed due to the following exception:\n" + ex.getMessage(), 
+          JOptionPane.showMessageDialog(this,
+            "EXE creation failed due to the following exception:\n" + ex.getMessage(),
             "Failed", 0);
         }
 

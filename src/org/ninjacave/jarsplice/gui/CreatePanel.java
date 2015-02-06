@@ -1,17 +1,11 @@
 package org.ninjacave.jarsplice.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.PrintStream;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.filechooser.FileFilter;
-import org.ninjacave.jarsplice.core.Splicer;
+import org.ninjacave.jarsplice.core.*;
 
 public class CreatePanel extends JPanel
   implements ActionListener
@@ -28,9 +22,9 @@ public class CreatePanel extends JPanel
       public void approveSelection() {
         File f = getSelectedFile();
         if ((f.exists()) && (getDialogType() == 1)) {
-          int result = 
+          int result =
             JOptionPane.showConfirmDialog(
-            this, "The file already exists. Do you want to overwrite it?", 
+            this, "The file already exists. Do you want to overwrite it?",
             "Confirm Replace", 0);
           switch (result) {
           case 0:
@@ -85,9 +79,9 @@ public class CreatePanel extends JPanel
   public void actionPerformed(ActionEvent e)
   {
     if (e.getSource() == this.createButton) {
-      this.fileChooser.setCurrentDirectory(this.jarSplice.lastDirectory);
+      this.fileChooser.setCurrentDirectory(this.jarSplice.lastExportDirectory);
       int value = this.fileChooser.showSaveDialog(this);
-      this.jarSplice.lastDirectory = this.fileChooser.getCurrentDirectory();
+      this.jarSplice.lastExportDirectory = this.fileChooser.getCurrentDirectory();
 
       if (value == 0)
       {
@@ -100,14 +94,14 @@ public class CreatePanel extends JPanel
         {
           this.splicer.createFatJar(jars, natives, output, mainClass, vmArgs);
 
-          JOptionPane.showMessageDialog(this, 
-            "Fat Jar Successfully Created.", 
+          JOptionPane.showMessageDialog(this,
+            "Fat Jar Successfully Created.",
             "Success", -1);
         }
         catch (Exception ex) {
           ex.printStackTrace();
-          JOptionPane.showMessageDialog(this, 
-            "Jar creation failed due to the following exception:\n" + ex.getMessage(), 
+          JOptionPane.showMessageDialog(this,
+            "Jar creation failed due to the following exception:\n" + ex.getMessage(),
             "Failed", 0);
         }
 

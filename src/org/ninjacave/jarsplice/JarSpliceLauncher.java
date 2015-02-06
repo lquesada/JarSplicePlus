@@ -1,24 +1,9 @@
 package org.ninjacave.jarsplice;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Random;
-import java.util.StringTokenizer;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.jar.*;
 
 public class JarSpliceLauncher
 {
@@ -130,15 +115,15 @@ public class JarSpliceLauncher
     if ((nativeDir == null) || (System.getProperty("os.name").startsWith("Win"))) {
       nativeDir = System.getProperty("java.io.tmpdir");
     }
-
-    nativeDir = nativeDir + File.separator + "natives" + new Random().nextInt();
+    if(!nativeDir.endsWith(File.separator))
+        nativeDir+=File.separator;
+    nativeDir += "natives" + new Random().nextInt();
 
     File dir = new File(nativeDir);
 
     if (!dir.exists()) {
       dir.mkdirs();
     }
-
     return nativeDir;
   }
 

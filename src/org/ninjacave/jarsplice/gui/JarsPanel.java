@@ -1,16 +1,10 @@
 package org.ninjacave.jarsplice.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.filechooser.FileFilter;
 
 public class JarsPanel extends JPanel
@@ -81,9 +75,9 @@ public class JarsPanel extends JPanel
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == this.addButton)
     {
-      this.fileChooser.setCurrentDirectory(this.jarSplice.lastDirectory);
+      this.fileChooser.setCurrentDirectory(this.jarSplice.lastJarsDirectory);
       int value = this.fileChooser.showDialog(this, "Add");
-      this.jarSplice.lastDirectory = this.fileChooser.getCurrentDirectory();
+      this.jarSplice.lastJarsDirectory = this.fileChooser.getCurrentDirectory();
 
       if (value == 0) {
         this.selectedFiles = this.fileChooser.getSelectedFiles();
