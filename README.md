@@ -3,7 +3,7 @@ JarSplicePlus
 
 JarSplicePlus (Jar File Merger - An Extension to JarSplice).  
 
-Copyright (c) 2013, Luis Quesada - https://github.com/lquesada
+Copyright (c) 2013, Luis Quesada Torres - https://github.com/lquesada | www.luisquesada.com
 
 JarSplice (The Fat Jar Creator) was originally published in The Ninja Cave (http://ninjacave.com/).
 JarSplice allows merging jar files and native libraries into a single jar or GNU/Linux, Windows, or Mac OS executable files.
