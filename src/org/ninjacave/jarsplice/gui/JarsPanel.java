@@ -77,6 +77,20 @@ public class JarsPanel extends JPanel
 
     return files;
   }
+  
+  public void setSelectedFiles(String[] files) {
+	  listModel.removeAllElements();
+	  selectedFiles = null;
+	  
+	  if(files != null) {
+		  int nbFiles = files.length;
+		  selectedFiles = new File[nbFiles];
+		  for(int i=0; i<nbFiles; i++) {
+			  selectedFiles[i] = new File(files[i]);
+			  listModel.addElement(files[i]);
+		  }
+	  }
+  }
 
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == this.addButton)
