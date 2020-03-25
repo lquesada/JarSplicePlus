@@ -1,19 +1,12 @@
 package org.ninjacave.jarsplice.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.PrintStream;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.filechooser.FileFilter;
-import org.ninjacave.jarsplice.core.ShellScriptSplicer;
+import org.ninjacave.jarsplice.core.*;
 
 public class ShellScriptPanel extends JPanel
   implements ActionListener
@@ -30,9 +23,9 @@ public class ShellScriptPanel extends JPanel
       public void approveSelection() {
         File f = getSelectedFile();
         if ((f.exists()) && (getDialogType() == 1)) {
-          int result = 
+          int result =
             JOptionPane.showConfirmDialog(
-            this, "The file already exists. Do you want to overwrite it?", 
+            this, "The file already exists. Do you want to overwrite it?",
             "Confirm Replace", 0);
           switch (result) {
           case 0:
@@ -70,8 +63,8 @@ public class ShellScriptPanel extends JPanel
     JPanel panel1 = new JPanel();
     JLabel label = new JLabel();
     label.setText(
-      String.format("<html><div style=\"width:%dpx;\">%s</div><html>", new Object[] { 
-      Integer.valueOf(300), 
+      String.format("<html><div style=\"width:%dpx;\">%s</div><html>", new Object[] {
+      Integer.valueOf(300),
       "This is an optional step and will create a Linux shellscript. This shellscript will contain all the jars and natives just like the executable jar. If there are native files then only the Linux native files (*.so) will be added to the shellscript." }));
 
     panel1.add(label);
@@ -99,9 +92,9 @@ public class ShellScriptPanel extends JPanel
   {
     if (e.getSource() == this.shellScriptButton)
     {
-      this.fileChooser.setCurrentDirectory(this.jarSplice.lastDirectory);
+      this.fileChooser.setCurrentDirectory(this.jarSplice.lastExportDirectory);
       int value = this.fileChooser.showSaveDialog(this);
-      this.jarSplice.lastDirectory = this.fileChooser.getCurrentDirectory();
+      this.jarSplice.lastExportDirectory = this.fileChooser.getCurrentDirectory();
 
       if (value == 0) {
         String[] sources = this.jarSplice.getJarsList();
@@ -113,14 +106,14 @@ public class ShellScriptPanel extends JPanel
         {
           this.shellScriptSplicer.createFatJar(sources, natives, output, mainClass, vmArgs);
 
-          JOptionPane.showMessageDialog(this, 
-            "ShellScript Successfully Created.", 
+          JOptionPane.showMessageDialog(this,
+            "ShellScript Successfully Created.",
             "Success", -1);
         }
         catch (Exception ex) {
           ex.printStackTrace();
-          JOptionPane.showMessageDialog(this, 
-            "ShellScript creation failed due to the following exception:\n" + ex.getMessage(), 
+          JOptionPane.showMessageDialog(this,
+            "ShellScript creation failed due to the following exception:\n" + ex.getMessage(),
             "Failed", 0);
         }
 

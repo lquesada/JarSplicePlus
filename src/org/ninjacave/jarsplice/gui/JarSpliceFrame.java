@@ -1,7 +1,7 @@
 package org.ninjacave.jarsplice.gui;
 
-import java.io.File;
-import javax.swing.JFrame;
+import java.io.*;
+import javax.swing.*;
 
 public class JarSpliceFrame
 {
@@ -13,13 +13,16 @@ public class JarSpliceFrame
   ShellScriptPanel shellScriptPanel = new ShellScriptPanel(this);
   MacAppPanel macAppPanel = new MacAppPanel(this);
   WinExePanel exePanel = new WinExePanel(this);
-  public File lastDirectory;
+  public File lastIconDirectory;
+  public File lastJarsDirectory;
+  public File lastNativesDirectory;
+  public File lastExportDirectory;
 
   public JarSpliceFrame()
   {
 
 	  //TITLE MODIFIED AS TO STATE THAT JARSPLICEPLUS IS AN EXTENSION TO JARSPLICE
-	  
+
     JFrame frame = new JFrame("JarSplicePlus - An Extension to JarSplice");
 
     TabPane tabPane = new TabPane(this);
